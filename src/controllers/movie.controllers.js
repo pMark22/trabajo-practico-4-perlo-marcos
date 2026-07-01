@@ -59,3 +59,36 @@ export const getMovieById = async (req, res) => {
 //         });
 //     }
 // };
+
+// POST: crear película
+export const createMovie = async (req, res) => {
+    try {
+        const { title, genre, duration, year, synopsis } = req.body;
+
+        // validaciones básicas
+        if (!title || !genre || !duration || !year) {
+            return res.status(400).json({
+                message: "Faltan campos obligatorios"
+            });
+        }
+
+        const newMovie = await Movie.create({
+            title,
+            genre,
+            duration,
+            year,
+            synopsis
+        });
+
+        res.status(201).json({
+            message: "Película creada correctamente",
+            data: newMovie
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al crear la película",
+            error: error.message
+        });
+    }
+};
