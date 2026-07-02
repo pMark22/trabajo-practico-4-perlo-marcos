@@ -65,12 +65,42 @@ export const createMovie = async (req, res) => {
     try {
         const { title, genre, duration, year, synopsis } = req.body;
 
-        // validaciones básicas
-        if (!title || !genre || !duration || !year) {
-            return res.status(400).json({
-                message: "Faltan campos obligatorios"
-            });
-        }
+        // Campos obligatorios
+if (!title || !genre || duration === undefined || year === undefined) {
+    return res.status(400).json({
+        message: "Los campos title, genre, duration y year son obligatorios."
+    });
+}
+
+// Duration
+if (!Number.isInteger(duration) || duration <= 0) {
+    return res.status(400).json({
+        message: "Duration debe ser un número entero mayor que 0."
+    });
+}
+
+// Year
+const currentYear = new Date().getFullYear();
+
+if (
+    !Number.isInteger(year) ||
+    year < 1888 ||
+    year > currentYear
+) {
+    return res.status(400).json({
+        message: "Year debe ser un número entero entre 1888 y el año actual."
+    });
+}
+
+// Synopsis
+if (
+    synopsis !== undefined &&
+    typeof synopsis !== "string"
+) {
+    return res.status(400).json({
+        message: "Synopsis debe ser una cadena de texto."
+    });
+}
 
         const newMovie = await Movie.create({
             title,
