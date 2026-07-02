@@ -3,7 +3,8 @@ import {
     getMovies,
     getMovieById,
     createMovie,
-    updateMovie
+    updateMovie,
+    deleteMovie
 } from "../controllers/movie.controllers.js";
 
 console.log("Rutas de películas cargadas");
@@ -14,5 +15,6 @@ router.get("/", getMovies);
 router.get("/:id", getMovieById);
 router.post("/", createMovie);
 router.put("/:id", updateMovie);
+router.delete("/:id", deleteMovie);
 
 export default router;

@@ -126,3 +126,27 @@ export const updateMovie = async (req, res) => {
         });
     }
 };
+// DELETE: eliminar una película
+export const deleteMovie = async (req, res) => {
+    try {
+        const movie = await Movie.findByPk(req.params.id);
+
+        if (!movie) {
+            return res.status(404).json({
+                message: "Película no encontrada"
+            });
+        }
+
+        await movie.destroy();
+
+        res.status(200).json({
+            message: "Película eliminada correctamente"
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al eliminar la película",
+            error: error.message
+        });
+    }
+};

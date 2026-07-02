@@ -10,6 +10,10 @@ app.use(express.json());
 // Rutas
 app.use("/api/movies", movieRoutes);
 
+app.delete("/prueba", (req, res) => {
+    res.json({ mensaje: "DELETE funciona" });
+});
+
 console.log("Rutas registradas");
 
 try {
