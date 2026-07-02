@@ -10,6 +10,8 @@ app.use(express.json());
 // Rutas
 app.use("/api/movies", movieRoutes);
 
+console.log("Rutas registradas");
+
 try {
     await sequelize.authenticate();
     console.log("Base de datos conectada");

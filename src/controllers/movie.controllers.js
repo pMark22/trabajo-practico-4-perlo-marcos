@@ -92,3 +92,37 @@ export const createMovie = async (req, res) => {
         });
     }
 };
+
+// PUT: actualizar una película
+export const updateMovie = async (req, res) => {
+    try {
+        const movie = await Movie.findByPk(req.params.id);
+
+        if (!movie) {
+            return res.status(404).json({
+                message: "Película no encontrada"
+            });
+        }
+
+        const { title, genre, duration, year, synopsis } = req.body;
+
+        await movie.update({
+            title,
+            genre,
+            duration,
+            year,
+            synopsis
+        });
+
+        res.status(200).json({
+            message: "Película actualizada correctamente",
+            data: movie
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al actualizar la película",
+            error: error.message
+        });
+    }
+};
