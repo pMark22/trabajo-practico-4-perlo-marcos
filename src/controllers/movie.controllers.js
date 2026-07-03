@@ -39,28 +39,6 @@ export const getMovieById = async (req, res) => {
     }
 };
 
-// // GET: obtener una película por ID
-// export const getMovieById = async (req, res) => {
-//     try {
-//         const movie = await Movie.findByPk(req.params.id);
-
-//         if (!movie) {
-//             return res.status(404).json({
-//                 message: "Película no encontrada"
-//             });
-//         }
-
-//         res.status(200).json(movie);
-
-//     } catch (error) {
-//         res.status(500).json({
-//             message: "Error al obtener la película",
-//             error: error.message
-//         });
-//     }
-// };
-
-// POST: crear película
 export const createMovie = async (req, res) => {
     try {
         const { title, genre, duration, year, synopsis } = req.body;
@@ -102,6 +80,17 @@ if (
     });
 }
 
+// Verificar título único
+const movieExists = await Movie.findOne({
+    where: { title }
+});
+
+if (movieExists) {
+    return res.status(400).json({
+        message: "Ya existe una película con ese título."
+    });
+}
+
         const newMovie = await Movie.create({
             title,
             genre,
@@ -116,11 +105,13 @@ if (
         });
 
     } catch (error) {
-        res.status(500).json({
-            message: "Error al crear la película",
-            error: error.message
-        });
-    }
+    console.error(error);
+
+    res.status(500).json({
+        message: "Error al crear la película",
+        error: error.message
+    });
+}
 };
 
 // PUT: actualizar una película
