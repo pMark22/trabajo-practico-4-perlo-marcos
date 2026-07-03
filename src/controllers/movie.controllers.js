@@ -127,6 +127,16 @@ export const updateMovie = async (req, res) => {
 
         const { title, genre, duration, year, synopsis } = req.body;
 
+        const movieExists = await Movie.findOne({
+            where: { title }
+        });
+
+        if (movieExists && movieExists.id !== movie.id) {
+            return res.status(400).json({
+                message: "Ya existe una película con ese título."
+            });
+        }
+
         await movie.update({
             title,
             genre,
@@ -147,6 +157,9 @@ export const updateMovie = async (req, res) => {
         });
     }
 };
+
+
+
 // DELETE: eliminar una película
 export const deleteMovie = async (req, res) => {
     try {
